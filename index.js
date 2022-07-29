@@ -2,7 +2,7 @@ require("dotenv").config()
 require("./data/config")
 const express = require("express")
 const server = express()
-const port = process.env.port || 8000
+const port = process.env.port
 const hbs = require("express-handlebars")
 const path = require("path")
 
