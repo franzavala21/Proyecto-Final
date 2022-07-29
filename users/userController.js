@@ -83,7 +83,7 @@ const login = async (req, res, next) => {
     }
 };
 
-var transport = nodemailer.createTransport({
+const transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
@@ -115,25 +115,32 @@ const forgotPass = async (req, res, next) => {
 
     }
     transport.sendMail(mailSend, (err, data) => {
-        if (err) return next(err)
-        res.status(200).json({ message: `${user.name}, a password recovery has been sent to ${user.email}. You´ve got 15 minutes to reset it`})
+        if (err) return next(err);
+        res.status(200).json({ message: `${user.name}, a password recovery has been sent to ${user.email}. You´ve got 20 minutes to reset it`})
     })
     
 
 }
 
 
-const resetPass = async(req, res, next) => {
+const reset = async(req, res, next) => {
     const token = req.params.token
     const tokenStatus = await tokenVerify(req.params.token)
     if(tokenStatus instanceof Error) {
-        res.status(403).json({ message: "Invalid or Expired Token"})
-    } else {
-        res.render("reset", { token, tokenStatus})
-    }
+      res.status(403).json({ message: "Invalid or Expired Token"})
+   } else {
+       res.render("reset", { token, tokenStatus})
+   }
+    
+}
 
-
-
+const savePass = async (req, res, next) => {
+    const token = req.params.token
+    const tokenStatus = await tokenVerify(token)
+    if(tokenStatus instanceof Error) return next(tokenStatus)
+    const pass = await hashPassword(req.body.password_1)
+    const result = await editByID(tokenStatus.id, { pass })
+    result instanceof Error ? next(result) : res.status(200).json({ meesage: `Password has been changed successfully`})
 }
 
 
@@ -141,4 +148,4 @@ const resetPass = async(req, res, next) => {
 
 
 
-module.exports = { listAll, listOne, editOne, deleteId, register, login, forgotPass, resetPass }
+module.exports = { listAll, listOne, editOne, deleteId, register, login, forgotPass, reset, savePass }

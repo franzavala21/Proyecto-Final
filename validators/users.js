@@ -45,10 +45,30 @@ const validatorLoginUser = [
             } else {
                 next()
             }
-    }
+    },
 ];
 
+const validatorPassword = [
+    check("password_1") 
+        .exists()
+        .isLength({ min:8, max: 15}).withMessage("Character count: min 8, max 15")
+        .trim(),
+    check("password_2")
+        .custom(async(password_2, {req}) => {
+            if(req.body.password_1 !== password_2) {
+                throw new Error("Both passwords must be identical")
+            }
+        }),
 
-//
-
-module.exports = { validatorCreateUser, validatorLoginUser}
+    (req, res, next) => {
+        const { token } = req.params
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            const arrWarnings = errors.array()
+            res.render("reset", { arrWarnings, token})
+        } else {
+            next()
+        }
+    }
+]
+module.exports = { validatorCreateUser, validatorLoginUser, validatorPassword}

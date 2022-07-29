@@ -3,10 +3,23 @@ require("./data/config")
 const express = require("express")
 const server = express()
 const port = process.env.port || 8000
+const hbs = require("express-handlebars")
+const path = require("path")
+
 
 server.use(express.json()) //me indica que puedo trabajar con archivos.json
 server.use(express.urlencoded({ extended: true }))
 
+//bootstrap
+server.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+server.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+
+
+
+//Handlebars
+server.set("view engine", "hbs")
+server.set("views", path.join(__dirname, "views"))
+server.engine("hbs", hbs.engine({ extname: "hbs"}))
 
 server.get("/", (req,res) => {
     const content = `

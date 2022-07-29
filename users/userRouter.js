@@ -1,5 +1,5 @@
 const { validatorCreateUser, validatorLoginUser, validatorPassword } = require("../validators/users")
-const { listAll, listOne, register, editOne, deleteId, login, forgotPass, resetPass, saveNewPassword } = require("./userController")
+const { listAll, listOne, register, editOne, deleteId, login, forgotPass, reset, savePass } = require("./userController")
 const router = require("express").Router()
 
 router.get("/", listAll)
@@ -16,9 +16,9 @@ router.post("/login", validatorLoginUser, login)
 
 router.post("/forgot-password", forgotPass)
 
-router.get("/reset/:token",validatorPassword, resetPass)
+router.get("/reset/:token", reset) 
 
-//router.post("/reset/:token", saveNewPassword)
+router.post("/reset/:token",validatorPassword, savePass)
 
 
 module.exports = router
