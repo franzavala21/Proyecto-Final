@@ -51,7 +51,7 @@ const registerUser = async(user) => {
 }
 
 const loginUser = async(error) => {
-    const query = `SELECT * FROM user WHERE email = '${error}`
+    const query = `SELECT * FROM user WHERE email = '${error}'`
     try{
         return await pool.query(query)
     } catch (error) {

@@ -24,14 +24,14 @@ const validatorCreateUser = [
             next()
         }
 
-    }
+    },
 ]
 
-validatorLoginUser = [
+const validatorLoginUser = [
     check("email")
         .exists().withMessage("Email is required")
         .isEmail().withMessage("Must be a valid email address")
-        .normalizeEmail,
+        .normalizeEmail(),
 
     check("password")
         .exists().withMessage("Password is required")
@@ -46,7 +46,9 @@ validatorLoginUser = [
                 next()
             }
     }
-]
+];
 
+
+//
 
 module.exports = { validatorCreateUser, validatorLoginUser}

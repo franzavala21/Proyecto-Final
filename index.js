@@ -18,6 +18,7 @@ server.get("/", (req,res) => {
 
 
 server.use("/users", require("./users/userRouter"))
+server.use("/posts", require("./house/houseRouter"))
 
 
 //catch all route(404)

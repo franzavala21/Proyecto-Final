@@ -25,7 +25,7 @@ const getAllHouses = async () => {
 const addNewHouse = async (house) => {
     const query = "INSERT INTO inmobiliaria SET ?"
     try{
-        return await pool.query(query);
+        return await pool.query(query, house);
     }catch (error){
         error.message = error.code;
         return error;
